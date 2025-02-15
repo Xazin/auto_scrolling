@@ -50,3 +50,15 @@ AutoScroll(
 ```
 
 _Notice that the `AutoScroll` widget requires the same `ScrollController` as your scrollable._
+
+The `AutoScroll` widget only supports single direction scrolling, to enable auto scroll on a view with both horizontal and vertical scrollables, use the `MultiAxisAutoScroll` widget like this:
+
+```dart
+MultiAxisAutoScroll(
+  verticalController: verticalController,
+  horizontalController: horizontalController,
+  child: ...,
+),
+```
+
+_Notice again, that the vertical and horizontal controller should be the same as those attached to your scrollables._
