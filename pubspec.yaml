@@ -2,6 +2,7 @@ name: auto_scrolling
 description: "Enables auto scrolling in a scrollable (ListView, GridView, etc.) by using tertiary mouse button (mouse wheel click)."
 topics:
   - scroll
+  - scrolling
   - autoscroll
   - mouse
 
@@ -9,7 +10,7 @@ homepage: https://keepascent.com
 repository: https://github.com/KeepAscent/auto_scrolling
 issue_tracker: https://github.com/KeepAscent/auto_scrolling/issues
 
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: ^3.6.0
@@ -31,8 +32,8 @@ flutter:
     platforms:
       web:
       macos:
-        dartPluginClass: AutoScrolling
+        dartPluginClass: AutoScroll
       windows:
-        dartPluginClass: AutoScrolling
+        dartPluginClass: AutoScroll
       linux:
-        dartPluginClass: AutoScrolling
+        dartPluginClass: AutoScroll
