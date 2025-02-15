@@ -7,7 +7,7 @@ void main() {
   group('AutoScroll widget', () {
     testWidgets('Scroll vertically', (tester) async {
       final controller = ScrollController();
-      await tester.pumpWidget(buildAutoScroll(controller));
+      await tester.pumpWidget(_buildAutoScroll(controller));
       await tester.pumpAndSettle();
 
       expect(controller.offset, 0.0);
@@ -31,7 +31,7 @@ void main() {
     testWidgets('Scroll horizontally', (tester) async {
       final controller = ScrollController();
       await tester.pumpWidget(
-        buildAutoScroll(
+        _buildAutoScroll(
           controller,
           scrollDirection: Axis.horizontal,
         ),
@@ -58,7 +58,7 @@ void main() {
   });
 }
 
-Widget buildAutoScroll(
+Widget _buildAutoScroll(
   ScrollController controller, {
   Axis scrollDirection = Axis.vertical,
   void Function(bool isScrolling)? onScrolling,

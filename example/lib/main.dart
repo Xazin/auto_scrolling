@@ -1,4 +1,5 @@
-import 'package:auto_scrolling/auto_scrolling.dart';
+import 'package:example/samples/multi_directional_scroll.dart';
+import 'package:example/samples/single_direction_scroll.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,21 +17,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Auto Scroll Demo Home Page'),
+      home: const AppWidget(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class AppWidget extends StatefulWidget {
+  const AppWidget({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<AppWidget> createState() => _AppWidgetState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AppWidgetState extends State<AppWidget> {
   final ScrollController controller = ScrollController();
   bool isVertical = true;
 
@@ -40,49 +39,59 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  Widget currentSample = const SingleDirectionScrollSample();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: [
-          Row(
-            children: [
-              Text(isVertical ? 'Vertical' : 'Horizontal'),
-              const SizedBox(width: 4),
-              Switch(
-                value: isVertical,
-                onChanged: (value) => setState(() => isVertical = value),
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: AutoScroll(
-        controller: controller,
-        scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
-        child: ListView.builder(
-          controller: controller,
-          scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
-          itemCount: 100,
-          itemBuilder: (_, index) => Container(
-            height: isVertical ? 500 : double.infinity,
-            width: isVertical ? double.infinity : 500,
-            color: colorForIndex(index),
-          ),
+        title: Text(
+          currentSample is SingleDirectionScrollSample
+              ? 'Single Direction Scroll'
+              : 'Multi Directional Scroll',
         ),
       ),
+      drawer: Drawer(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        child: ListView(
+          children: [
+            Container(
+              height: 100,
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Center(
+                child: Text(
+                  'Auto scroll examples',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 24,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Single Direction Scroll'),
+              onTap: () {
+                setState(
+                  () => currentSample = const SingleDirectionScrollSample(),
+                );
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Multi Directional Scroll'),
+              onTap: () {
+                setState(
+                  () => currentSample = const MultiDirectionalScrollSample(),
+                );
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: currentSample,
     );
-  }
-
-  Color colorForIndex(int index) {
-    if (index % 5 == 0) return Colors.blue;
-    if (index % 5 == 1) return Colors.red;
-    if (index % 5 == 2) return Colors.orange;
-    if (index % 5 == 3) return Colors.green;
-    if (index % 5 == 4) return Colors.purple;
-
-    return Colors.black;
   }
 }
