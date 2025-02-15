@@ -142,18 +142,21 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
         return scrollTimer?.cancel();
       }
 
-      if (!shouldMove()) return;
+      final (moveVertical, moveHorizontal) = shouldMove();
 
-      final dy = startOffset!.dy - cursorOffset!.dy;
-      final dx = startOffset!.dx - cursorOffset!.dx;
+      if (moveVertical) {
+        final dy = startOffset!.dy - cursorOffset!.dy;
+        widget.verticalController.position.moveTo(
+          widget.verticalController.position.pixels - dy * widget.velocity,
+        );
+      }
 
-      widget.verticalController.position.moveTo(
-        widget.verticalController.position.pixels - dy * widget.velocity,
-      );
-
-      widget.horizontalController.position.moveTo(
-        widget.horizontalController.position.pixels - dx * widget.velocity,
-      );
+      if (moveHorizontal) {
+        final dx = startOffset!.dx - cursorOffset!.dx;
+        widget.horizontalController.position.moveTo(
+          widget.horizontalController.position.pixels - dx * widget.velocity,
+        );
+      }
     });
   }
 
@@ -173,16 +176,24 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
   /// Checks whether the cursor has moved out of the deadZoneRadius from
   /// the [startOffset].
   ///
-  /// Returns `true` if the cursor has moved out of the dead zone,
-  /// otherwise `false`.
+  /// Returns a tuple of 2 booleans, the first one indicates whether the
+  /// vertical axis should move, and the second one indicates whether the
+  /// horizontal axis should move.
   ///
-  bool shouldMove() {
+  (bool, bool) shouldMove() {
     final dx = (cursorOffset!.dx - startOffset!.dx).abs();
     final dy = (cursorOffset!.dy - startOffset!.dy).abs();
-    if (dx < widget.deadZoneRadius && dy < widget.deadZoneRadius) {
-      return false;
+
+    var moveHorizontal = true;
+    if (dx < widget.deadZoneRadius) {
+      moveHorizontal = false;
     }
 
-    return true;
+    var moveVertical = true;
+    if (dy < widget.deadZoneRadius) {
+      moveVertical = false;
+    }
+
+    return (moveVertical, moveHorizontal);
   }
 }
