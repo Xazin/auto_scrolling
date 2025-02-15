@@ -174,9 +174,10 @@ class _AutoScrollState extends State<AutoScroll> {
   /// otherwise `false`.
   ///
   bool shouldMove() {
-    final dx = (cursorOffset!.dx - startOffset!.dx).abs();
-    final dy = (cursorOffset!.dy - startOffset!.dy).abs();
-    if (dx < widget.deadZoneRadius && dy < widget.deadZoneRadius) {
+    final difference = widget.scrollDirection == Axis.horizontal
+        ? (cursorOffset!.dx - startOffset!.dx).abs()
+        : (cursorOffset!.dy - startOffset!.dy).abs();
+    if (difference < widget.deadZoneRadius) {
       return false;
     }
 
