@@ -61,17 +61,31 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: AutoScroll(
         controller: controller,
-        scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
-        child: ListView.builder(
-          controller: controller,
-          scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
-          itemCount: 100,
-          itemBuilder: (_, index) => Container(
-            height: isVertical ? 500 : double.infinity,
-            width: isVertical ? double.infinity : 500,
-            color: colorForIndex(index),
+        scrollDirection: Axis.vertical,
+        child: TwoDimensionalScrollWidget(
+          verticalController: controller,
+          horizontalController: ScrollController(),
+          child: Column(
+            children: [
+              for (int i = 0; i < 10; i++)
+                Container(
+                  height: 5000,
+                  width: 5000,
+                  color: colorForIndex(i),
+                ),
+            ],
           ),
         ),
+        // ListView.builder(
+        //   controller: controller,
+        //   scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
+        //   itemCount: 100,
+        //   itemBuilder: (_, index) => Container(
+        //     height: isVertical ? 500 : double.infinity,
+        //     width: isVertical ? double.infinity : 500,
+        //     color: colorForIndex(index),
+        //   ),
+        // ),
       ),
     );
   }
@@ -84,5 +98,48 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index % 5 == 4) return Colors.purple;
 
     return Colors.black;
+  }
+}
+
+class TwoDimensionalScrollWidget extends StatelessWidget {
+  const TwoDimensionalScrollWidget({
+    super.key,
+    this.verticalController,
+    this.horizontalController,
+    required this.child,
+  });
+
+  final Widget child;
+  final ScrollController? verticalController;
+  final ScrollController? horizontalController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+      thickness: 12.0,
+      trackVisibility: true,
+      interactive: true,
+      controller: verticalController,
+      scrollbarOrientation: ScrollbarOrientation.right,
+      thumbVisibility: true,
+      child: Scrollbar(
+        thickness: 12.0,
+        trackVisibility: true,
+        interactive: true,
+        controller: horizontalController,
+        scrollbarOrientation: ScrollbarOrientation.bottom,
+        thumbVisibility: true,
+        notificationPredicate: (ScrollNotification notif) => notif.depth == 1,
+        child: SingleChildScrollView(
+          controller: verticalController,
+          child: SingleChildScrollView(
+            primary: false,
+            controller: horizontalController,
+            scrollDirection: Axis.horizontal,
+            child: child,
+          ),
+        ),
+      ),
+    );
   }
 }
