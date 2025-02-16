@@ -24,6 +24,7 @@ class _MultiDirectionalScrollSampleState
   @override
   Widget build(BuildContext context) {
     return MultiAxisAutoScroll(
+      anchorBuilder: (context) => MultiDirectionAnchor(),
       verticalController: verticalController,
       horizontalController: horizontalController,
       child: Scrollbar(
