@@ -4,5 +4,6 @@
 ///
 library;
 
+export 'src/anchors.dart';
 export 'src/auto_scroll.dart';
 export 'src/multi_axis_auto_scroll.dart';

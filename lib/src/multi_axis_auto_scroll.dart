@@ -32,6 +32,7 @@ class MultiAxisAutoScroll extends StatefulWidget {
     this.deadZoneRadius = 10,
     this.velocity = 0.2,
     this.scrollTick = 15,
+    this.anchorBuilder,
     required this.child,
   });
 
@@ -87,6 +88,15 @@ class MultiAxisAutoScroll extends StatefulWidget {
   ///
   final int scrollTick;
 
+  /// A function that is called to build the anchor widget.
+  ///
+  /// The anchor widget is the widget that will be placed at the cursors
+  /// initial position when the auto-scrolling is engaged.
+  ///
+  /// If not provided, the anchor won't be displayed.
+  ///
+  final Widget Function(BuildContext)? anchorBuilder;
+
   /// The child [Widget].
   ///
   final Widget child;
@@ -96,6 +106,8 @@ class MultiAxisAutoScroll extends StatefulWidget {
 }
 
 class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
+  final _key = GlobalKey();
+
   Offset? startOffset;
   Offset? cursorOffset;
 
@@ -109,19 +121,54 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
 
   @override
   Widget build(BuildContext context) {
-    return AutoScrollMouseListener(
-      onStartScrolling: (startOffset) {
-        setState(() {
-          this.startOffset = startOffset;
-          cursorOffset = startOffset;
-        });
-        startScrolling();
-      },
-      onEndScrolling: stopScrolling,
-      onMouseMoved: (_, cursorOffset) {
-        setState(() => this.cursorOffset = cursorOffset);
-      },
-      child: widget.child,
+    return Stack(
+      key: _key,
+      children: [
+        Positioned.fill(
+          child: AutoScrollMouseListener(
+            onStartScrolling: (startOffset) {
+              setState(() {
+                this.startOffset = startOffset;
+                cursorOffset = startOffset;
+              });
+              startScrolling();
+            },
+            onEndScrolling: stopScrolling,
+            onMouseMoved: (_, cursorOffset) {
+              setState(() => this.cursorOffset = cursorOffset);
+            },
+            child: widget.child,
+          ),
+        ),
+        buildAnchor(),
+      ],
+    );
+  }
+
+  Offset getAnchorOffset() {
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox?;
+
+    if (renderBox == null || startOffset == null) return Offset.zero;
+
+    return renderBox.globalToLocal(startOffset!);
+  }
+
+  Widget buildAnchor() {
+    if (startOffset == null || widget.anchorBuilder == null) {
+      return const SizedBox.expand();
+    }
+
+    final localOffset = getAnchorOffset();
+    return Positioned(
+      left: localOffset.dx,
+      top: localOffset.dy,
+      child: GestureDetector(
+        onTap: stopScrolling,
+        child: FractionalTranslation(
+          translation: const Offset(-0.5, -0.5),
+          child: widget.anchorBuilder!.call(context),
+        ),
+      ),
     );
   }
 

@@ -39,6 +39,9 @@ class _SingleDirectionScrollSampleState
         ),
         Expanded(
           child: AutoScroll(
+            anchorBuilder: (context) => SingleDirectionAnchor(
+              direction: isVertical ? Axis.vertical : Axis.horizontal,
+            ),
             controller: controller,
             scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
             child: ListView.builder(
