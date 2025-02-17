@@ -39,6 +39,21 @@ class _SingleDirectionScrollSampleState
         ),
         Expanded(
           child: AutoScroll(
+            willUseCustomCursor: (direction) => switch (direction) {
+              AutoScrollDirection.down ||
+              AutoScrollDirection.up ||
+              AutoScrollDirection.left ||
+              AutoScrollDirection.right =>
+                true,
+              _ => false,
+            },
+            cursorBuilder: (isMoving, direction) => switch (direction) {
+              AutoScrollDirection.down => Icon(Icons.keyboard_arrow_down),
+              AutoScrollDirection.up => Icon(Icons.keyboard_arrow_up),
+              AutoScrollDirection.left => Icon(Icons.keyboard_arrow_left),
+              AutoScrollDirection.right => Icon(Icons.keyboard_arrow_right),
+              _ => null,
+            },
             anchorBuilder: (context) => SingleDirectionAnchor(
               direction: isVertical ? Axis.vertical : Axis.horizontal,
             ),

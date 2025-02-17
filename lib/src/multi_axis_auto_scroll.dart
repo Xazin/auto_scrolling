@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_scrolling/auto_scrolling.dart';
 import 'package:auto_scrolling/src/auto_scroll_mouse_listener.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,8 @@ class MultiAxisAutoScroll extends StatefulWidget {
     this.velocity = 0.2,
     this.scrollTick = 15,
     this.anchorBuilder,
+    this.willUseCustomCursor,
+    this.cursorBuilder,
     required this.child,
   });
 
@@ -97,6 +100,20 @@ class MultiAxisAutoScroll extends StatefulWidget {
   ///
   final Widget Function(BuildContext)? anchorBuilder;
 
+  /// A function that is called to determine wether a custom cursor should
+  /// be displayed. If the function returns `true`, the custom cursor will
+  /// be displayed, otherwise the system cursor will be displayed.
+  ///
+  /// The function is called with the current direction of the auto-scroll.
+  ///
+  final bool Function(AutoScrollDirection direction)? willUseCustomCursor;
+
+  /// The cursor builder that is called to build the cursor widget.
+  ///
+  /// If not provided, the cursor will default to the system cursor.
+  ///
+  final CursorBuilder? cursorBuilder;
+
   /// The child [Widget].
   ///
   final Widget child;
@@ -108,10 +125,15 @@ class MultiAxisAutoScroll extends StatefulWidget {
 class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
   final _key = GlobalKey();
 
+  Timer? scrollTimer;
+
   Offset? startOffset;
   Offset? cursorOffset;
+  AutoScrollDirection direction = AutoScrollDirection.none;
 
-  Timer? scrollTimer;
+  bool get useCustomCursor =>
+      widget.cursorBuilder != null &&
+      (widget.willUseCustomCursor?.call(direction) ?? false);
 
   @override
   void dispose() {
@@ -121,27 +143,40 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      key: _key,
-      children: [
-        Positioned.fill(
-          child: AutoScrollMouseListener(
-            onStartScrolling: (startOffset) {
-              setState(() {
-                this.startOffset = startOffset;
-                cursorOffset = startOffset;
-              });
-              startScrolling();
-            },
-            onEndScrolling: stopScrolling,
-            onMouseMoved: (_, cursorOffset) {
-              setState(() => this.cursorOffset = cursorOffset);
-            },
-            child: widget.child,
+    return MouseRegion(
+      cursor: startOffset != null && useCustomCursor
+          ? SystemMouseCursors.none
+          : MouseCursor.defer,
+      child: Stack(
+        key: _key,
+        children: [
+          Positioned.fill(
+            child: AutoScrollMouseListener(
+              hideCursor: useCustomCursor,
+              onStartScrolling: (startOffset) {
+                setState(() {
+                  this.startOffset = startOffset;
+                  cursorOffset = startOffset;
+                });
+                startScrolling();
+              },
+              onEndScrolling: stopScrolling,
+              onMouseMoved: (_, cursorOffset) {
+                setState(() => this.cursorOffset = cursorOffset);
+              },
+              child: widget.child,
+            ),
           ),
-        ),
-        buildAnchor(),
-      ],
+          buildAnchor(),
+          if (cursorOffset != null && widget.cursorBuilder != null)
+            AutoScrollCustomCursor(
+              parentKey: _key,
+              cursorOffset: cursorOffset!,
+              direction: direction,
+              cursorBuilder: widget.cursorBuilder!,
+            ),
+        ],
+      ),
     );
   }
 
@@ -191,11 +226,18 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
 
       final (moveVertical, moveHorizontal) = shouldMove();
 
+      if (!moveVertical && !moveHorizontal) {
+        direction = AutoScrollDirection.none;
+        return;
+      }
+
       if (moveVertical) {
         final dy = startOffset!.dy - cursorOffset!.dy;
         widget.verticalController.position.moveTo(
           widget.verticalController.position.pixels - dy * widget.velocity,
         );
+
+        direction = dy > 0 ? AutoScrollDirection.up : AutoScrollDirection.down;
       }
 
       if (moveHorizontal) {
@@ -203,6 +245,25 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
         widget.horizontalController.position.moveTo(
           widget.horizontalController.position.pixels - dx * widget.velocity,
         );
+
+        direction =
+            dx > 0 ? AutoScrollDirection.left : AutoScrollDirection.right;
+      }
+
+      if (moveVertical && moveHorizontal) {
+        final moveUp = startOffset!.dy > cursorOffset!.dy;
+        final moveLeft = startOffset!.dx > cursorOffset!.dx;
+
+        direction = switch (moveUp) {
+          true => switch (moveLeft) {
+              true => AutoScrollDirection.upAndLeft,
+              false => AutoScrollDirection.upAndRight,
+            },
+          false => switch (moveLeft) {
+              true => AutoScrollDirection.downAndLeft,
+              false => AutoScrollDirection.downAndRight,
+            },
+        };
       }
     });
   }
@@ -214,6 +275,7 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
       scrollTimer?.cancel();
       startOffset = null;
       cursorOffset = null;
+      direction = AutoScrollDirection.none;
     });
 
     // Notify that scrolling has ended.

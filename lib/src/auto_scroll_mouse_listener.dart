@@ -12,6 +12,7 @@ class AutoScrollMouseListener extends StatefulWidget {
     this.onStartScrolling,
     this.onEndScrolling,
     this.onMouseMoved,
+    this.hideCursor = false,
     required this.child,
   });
 
@@ -31,6 +32,12 @@ class AutoScrollMouseListener extends StatefulWidget {
   /// The cursorOffset is the current position of the cursor.
   ///
   final void Function(Offset startOffset, Offset cursorOffset)? onMouseMoved;
+
+  /// Whether to hide the cursor while scrolling.
+  ///
+  /// Defaults to `false`.
+  ///
+  final bool hideCursor;
 
   /// The child [Widget].
   ///
@@ -52,6 +59,9 @@ class _AutoScrollMouseListenerState extends State<AutoScrollMouseListener> {
     // auto scrolling is engaged by middle mouse click rather than
     // middle mouse click+drag.
     return MouseRegion(
+      cursor: widget.hideCursor && isScrolling
+          ? SystemMouseCursors.none
+          : SystemMouseCursors.basic,
       onHover: (event) {
         if (isScrolling && startOffset != null) {
           widget.onMouseMoved?.call(startOffset!, event.position);
