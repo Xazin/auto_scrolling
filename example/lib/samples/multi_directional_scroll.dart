@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_scrolling/auto_scrolling.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +26,11 @@ class _MultiDirectionalScrollSampleState
   @override
   Widget build(BuildContext context) {
     return MultiAxisAutoScroll(
+      willUseCustomCursor: (direction) => switch (direction) {
+        AutoScrollDirection.none => false,
+        _ => true,
+      },
+      cursorBuilder: cursorBuilder,
       anchorBuilder: (context) => MultiDirectionAnchor(),
       verticalController: verticalController,
       horizontalController: horizontalController,
@@ -63,6 +70,45 @@ class _MultiDirectionalScrollSampleState
         ),
       ),
     );
+  }
+
+  Widget? cursorBuilder(isMoving, direction) {
+    return switch (direction) {
+      AutoScrollDirection.down => RotatedBox(
+          quarterTurns: 2,
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.up => UpDirectionArrow(),
+      AutoScrollDirection.left => RotatedBox(
+          quarterTurns: 3,
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.right => RotatedBox(
+          quarterTurns: 1,
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.downAndLeft => Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationZ(pi / 4 * 5),
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.downAndRight => Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationZ(pi / 4 * 3),
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.upAndLeft => Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationZ(-0.75),
+          child: UpDirectionArrow(),
+        ),
+      AutoScrollDirection.upAndRight => Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationZ(0.75),
+          child: UpDirectionArrow(),
+        ),
+      _ => null,
+    };
   }
 
   Color colorForIndex(int index) {
