@@ -1,3 +1,7 @@
+## 0.3.1
+
+- docus: update documentation by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/11
+
 ## 0.3.0
 
 - feat: custom cursor by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/9

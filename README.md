@@ -122,7 +122,7 @@ AutoScroll(
     // If we are moving up or down, turn the cursor into an arrow
     // turned in the corresponding scroll direction
     return switch (direction) {
-      AutoScrollDirection.none => SingleDirectionAnchor(),
+      AutoScrollDirection.none => const SingleDirectionAnchor(),
       AutoScrollDirection.up => const UpDirectionArrow(),
       AutoScrollDirection.down => const RotatedBox(quarterTurns: 2, child: UpDirectionArrow()), 
       _ => null,
