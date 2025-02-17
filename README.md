@@ -62,3 +62,81 @@ MultiAxisAutoScroll(
 ```
 
 _Notice again, that the vertical and horizontal controller should be the same as those attached to your scrollables._
+
+## Customization
+
+Both `AutoScroll` and `MultiAxisAutoScroll` support custom anchor and cursor widgets.
+
+An anchor is a widget that stays at the start offset when engaging auto scroll, similar to on FireFox. The anchor builder can be used simply like this:
+
+```dart
+AutoScroll(
+  anchorBuilder: (context) => SingleDirectionAnchor(
+    direction: Axis.horizontal,
+  ),
+  ...,
+),
+```
+
+The above will ensure that an anchor with an arrow left and right, stays on the starting position when engaging auto scroll. For an anchor with arrows in all directions, use `MultiDirectionAnchor()`.
+
+In some applications, example Google Chrome, the cursor turns into an anchor instead when auto scroll is engaged but there is no movement. This happens when the cursor is too close to the anchor position (start offset).
+
+This can be achieved by leveraging `CursorBuilder`. To do so, simply provide a `CursorBuilder` method as such:
+
+```dart
+AutoScroll(
+  willUseCustomCursor: (direction) => switch (direction) {
+    AutoScrollDirection.none => true,
+    _ => false,
+  },
+  cursorBuilder: (bool isMoving, AutoScrollDirection direction) {
+    if (direction == AutoScrollDirection.none) {
+      // No scroll currently active
+      return SingleDirectionAnchor();
+    }
+    
+    // Show default cursor
+    return null;
+  },
+  ...,
+),
+```
+
+It is important to notice the `willUseCustomCursor` callback, in the above case we want to show a custom cursor only when there is no scroll direction. If we change it to an example in which we show an arrow up or down depending on the scroll direction, we should add it to the callback:
+
+```dart
+AutoScroll(
+  willUseCustomCursor: (direction) => switch (direction) {
+    AutoScrollDirection.none ||
+     AutoScrollDirection.up ||
+     AutoScrollDirection.down => true,
+    _ => false,
+  },
+  cursorBuilder: (bool isMoving, AutoScrollDirection direction) {
+    if (direction == AutoScrollDirection.none) {
+      // No scroll currently active
+      return SingleDirectionAnchor();
+    }
+
+    // If we are moving up or down, turn the cursor into an arrow
+    // turned in the corresponding scroll direction
+    return switch (direction) {
+      AutoScrollDirection.none => SingleDirectionAnchor(),
+      AutoScrollDirection.up => const UpDirectionArrow(),
+      AutoScrollDirection.down => const RotatedBox(quarterTurns: 2, child: UpDirectionArrow()), 
+      _ => null,
+    };
+  },
+  ...,
+),
+```
+
+When using `AutoScroll` or `MultiAxisAutoScroll` the default dead zone radius is set to 10 pixels, and can be modified by providing a different value for `deadZoneRadius`, like this:
+
+```dart
+AutoScroll(
+  deadZoneRadius: 15,
+  ...,
+),
+```

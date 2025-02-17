@@ -59,14 +59,15 @@ class _AppWidgetState extends State<AppWidget> {
           children: [
             Container(
               height: 100,
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
+              decoration: const BoxDecoration(color: Colors.blue),
+              child: const Center(
                 child: Text(
                   'Auto scroll examples',
                   style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 24,
-                      color: Colors.white),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

@@ -72,40 +72,40 @@ class _MultiDirectionalScrollSampleState
     );
   }
 
-  Widget? cursorBuilder(isMoving, direction) {
+  Widget? cursorBuilder(bool isMoving, AutoScrollDirection direction) {
     return switch (direction) {
-      AutoScrollDirection.down => RotatedBox(
+      AutoScrollDirection.down => const RotatedBox(
           quarterTurns: 2,
           child: UpDirectionArrow(),
         ),
-      AutoScrollDirection.up => UpDirectionArrow(),
-      AutoScrollDirection.left => RotatedBox(
+      AutoScrollDirection.up => const UpDirectionArrow(),
+      AutoScrollDirection.left => const RotatedBox(
           quarterTurns: 3,
           child: UpDirectionArrow(),
         ),
-      AutoScrollDirection.right => RotatedBox(
+      AutoScrollDirection.right => const RotatedBox(
           quarterTurns: 1,
           child: UpDirectionArrow(),
         ),
       AutoScrollDirection.downAndLeft => Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationZ(pi / 4 * 5),
-          child: UpDirectionArrow(),
+          child: const UpDirectionArrow(),
         ),
       AutoScrollDirection.downAndRight => Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationZ(pi / 4 * 3),
-          child: UpDirectionArrow(),
+          child: const UpDirectionArrow(),
         ),
       AutoScrollDirection.upAndLeft => Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationZ(-0.75),
-          child: UpDirectionArrow(),
+          child: const UpDirectionArrow(),
         ),
       AutoScrollDirection.upAndRight => Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationZ(0.75),
-          child: UpDirectionArrow(),
+          child: const UpDirectionArrow(),
         ),
       _ => null,
     };
