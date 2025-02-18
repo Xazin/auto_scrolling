@@ -30,11 +30,16 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
+      - name: Enable Flutter Desktop
+        run: flutter config --enable-linux-desktop
+        shell: bash
+
       - name: Check formatting
         run: dart format --set-exit-if-changed .
 
       - name: Run analyze
         run: flutter analyze .
+        shell: bash
 
   test:
     runs-on: ubuntu-latest
