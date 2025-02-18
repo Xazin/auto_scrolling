@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  flutter_version: "3.29.0"
+  flutter_version: "3.24.5"
   flutter_channel: "stable"
 
 jobs:
@@ -18,8 +18,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -45,8 +45,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
+          channel: ${{ env.flutter_channel }}
 
       - name: Install dependencies
         run: flutter pub get
