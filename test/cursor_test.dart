@@ -8,17 +8,19 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: Center(
-              child: AutoScrollCustomCursor(
-                parentKey: GlobalKey(),
-                cursorOffset: Offset.zero,
-                direction: AutoScrollDirection.up,
-                cursorBuilder: (_) => Container(
-                  width: 10,
-                  height: 10,
-                  color: Colors.red,
+            body: Stack(
+              children: [
+                AutoScrollCustomCursor(
+                  parentKey: GlobalKey(),
+                  cursorOffset: Offset.zero,
+                  direction: AutoScrollDirection.up,
+                  cursorBuilder: (_) => Container(
+                    width: 10,
+                    height: 10,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
