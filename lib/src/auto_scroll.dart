@@ -214,8 +214,6 @@ class _AutoScrollState extends State<AutoScroll> {
   /// the [ScrollController].
   ///
   void startScrolling() {
-    debugPrint('[DEBUG] StartedScrolling!');
-
     // Notify that scrolling has started.
     widget.onScrolling?.call(true);
 
@@ -252,7 +250,6 @@ class _AutoScrollState extends State<AutoScroll> {
   /// Stops scrolling by cancelling the timer and resetting the state.
   ///
   void stopScrolling() {
-    debugPrint('[DEBUG] StoppedScrolling!');
     setState(() {
       scrollTimer?.cancel();
       startOffset = null;

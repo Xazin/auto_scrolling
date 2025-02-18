@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_scrolling/auto_scrolling.dart';
 import 'package:flutter/material.dart';
 
@@ -72,43 +70,12 @@ class _MultiDirectionalScrollSampleState
     );
   }
 
-  Widget? cursorBuilder(bool isMoving, AutoScrollDirection direction) {
-    return switch (direction) {
-      AutoScrollDirection.down => const RotatedBox(
-          quarterTurns: 2,
-          child: UpDirectionArrow(),
-        ),
-      AutoScrollDirection.up => const UpDirectionArrow(),
-      AutoScrollDirection.left => const RotatedBox(
-          quarterTurns: 3,
-          child: UpDirectionArrow(),
-        ),
-      AutoScrollDirection.right => const RotatedBox(
-          quarterTurns: 1,
-          child: UpDirectionArrow(),
-        ),
-      AutoScrollDirection.downAndLeft => Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationZ(pi / 4 * 5),
-          child: const UpDirectionArrow(),
-        ),
-      AutoScrollDirection.downAndRight => Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationZ(pi / 4 * 3),
-          child: const UpDirectionArrow(),
-        ),
-      AutoScrollDirection.upAndLeft => Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationZ(-0.75),
-          child: const UpDirectionArrow(),
-        ),
-      AutoScrollDirection.upAndRight => Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationZ(0.75),
-          child: const UpDirectionArrow(),
-        ),
-      _ => null,
-    };
+  Widget? cursorBuilder(AutoScrollDirection direction) {
+    if (direction == AutoScrollDirection.none) {
+      return null;
+    }
+
+    return DirectionArrow(direction: direction);
   }
 
   Color colorForIndex(int index) {
