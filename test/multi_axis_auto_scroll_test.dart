@@ -138,6 +138,73 @@ void main() {
       expect(find.text(anchorLabel), findsNothing);
     });
   });
+
+  testWidgets('Custom cursor vertically', (tester) async {
+    const upLabel = 'UP';
+    const downLabel = 'DOWN';
+
+    final verticalController = ScrollController();
+    final horizontalController = ScrollController();
+
+    await tester.pumpWidget(
+      _buildAutoScroll(
+        verticalController,
+        horizontalController,
+        willUseCustomCursor: (direction) => [
+          AutoScrollDirection.up,
+          AutoScrollDirection.down
+        ].contains(direction),
+        cursorBuilder: (direction) {
+          if (direction == AutoScrollDirection.up) {
+            return const Text(upLabel);
+          } else if (direction == AutoScrollDirection.down) {
+            return const Text(downLabel);
+          }
+
+          return null;
+        },
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(verticalController.offset, 0.0);
+
+    final center = tester.getCenter(find.byType(MultiAxisAutoScroll));
+
+    await tester.tapAt(center, buttons: kMiddleMouseButton);
+    await tester.pump();
+
+    final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    await gesture.addPointer(location: center);
+    await tester.pump();
+
+    expect(find.text(upLabel), findsNothing);
+    expect(find.text(downLabel), findsNothing);
+
+    await gesture.moveBy(const Offset(0, 15));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text(downLabel), findsOneWidget);
+    expect(find.text(upLabel), findsNothing);
+
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    // We expect to not be at the start
+    expect(verticalController.offset, isNot(0.0));
+
+    // Now we scroll up to test the other version of the cursor
+
+    await gesture.moveTo(center + const Offset(0, -15));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text(upLabel), findsOneWidget);
+    expect(find.text(downLabel), findsNothing);
+
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+
+    // We expect to be at the beginning, so the offset should be 0.
+    expect(verticalController.offset, 0.0);
+  });
 }
 
 Widget _buildAutoScroll(
@@ -145,10 +212,14 @@ Widget _buildAutoScroll(
   ScrollController horizontalController, {
   void Function(bool isScrolling)? onScrolling,
   Widget Function(BuildContext)? anchorBuilder,
+  Widget? Function(AutoScrollDirection)? cursorBuilder,
+  bool Function(AutoScrollDirection)? willUseCustomCursor,
 }) {
   return MaterialApp(
     home: Scaffold(
       body: MultiAxisAutoScroll(
+        willUseCustomCursor: willUseCustomCursor,
+        cursorBuilder: cursorBuilder,
         anchorBuilder: anchorBuilder,
         verticalController: verticalController,
         horizontalController: horizontalController,
