@@ -13,7 +13,7 @@ env:
 
 jobs:
   analyze:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Fetch code from repository
         uses: actions/checkout@v4
