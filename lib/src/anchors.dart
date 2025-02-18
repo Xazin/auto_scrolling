@@ -74,67 +74,69 @@ class MultiDirectionAnchor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 25,
-      height: 25,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(width: .8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 3),
-            child: RotatedBox(
-              quarterTurns: -1,
-              child: CustomPaint(
-                painter: _TrianglePainter(),
-                size: Size(5, 3),
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 3),
+    return IgnorePointer(
+      child: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(width: .8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 3),
+              child: RotatedBox(
+                quarterTurns: -1,
                 child: CustomPaint(
                   painter: _TrianglePainter(),
                   size: Size(5, 3),
                 ),
               ),
-              Container(
-                width: 3,
-                height: 3,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 3),
-                child: RotatedBox(
-                  quarterTurns: 2,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 3),
                   child: CustomPaint(
                     painter: _TrianglePainter(),
                     size: Size(5, 3),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.only(right: 3),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: CustomPaint(
-                painter: _TrianglePainter(),
-                size: Size(5, 3),
+                Container(
+                  width: 3,
+                  height: 3,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 3),
+                  child: RotatedBox(
+                    quarterTurns: 2,
+                    child: CustomPaint(
+                      painter: _TrianglePainter(),
+                      size: Size(5, 3),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.only(right: 3),
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: CustomPaint(
+                  painter: _TrianglePainter(),
+                  size: Size(5, 3),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
