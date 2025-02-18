@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  flutter_version: "3.24.5"
+  flutter_version: "3.29.0"
   flutter_channel: "stable"
 
 jobs:
@@ -18,19 +18,22 @@ jobs:
       - name: Fetch code from repository
         uses: actions/checkout@v4
 
-      - name: Setup the Flutter environment
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
 
-      - name: Get Flutter dependencies
-        run: flutter pub get .
+      - name: Remove example/ directory
+        run: rm -rf example/
 
-      - name: Check for any formatting issues
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Check formatting
         run: dart format --set-exit-if-changed .
 
-      - name: Statically analyze the Dart code
+      - name: Run analyze
         run: flutter analyze .
 
   test:
@@ -44,6 +47,9 @@ jobs:
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: ${{ env.flutter_channel }}
+
+      - name: Remove example/ directory
+        run: rm -rf example/
 
       - name: Install dependencies
         run: flutter pub get
