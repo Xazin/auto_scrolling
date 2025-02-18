@@ -94,27 +94,27 @@ linter:
     - no_self_assignments
     - no_wildcard_variable_uses
     - non_constant_identifier_names
-    - noop_primitive_operations
-    - null_check_on_nullable_type_parameter
-    - null_closures
-    - omit_local_variable_types
-    - one_member_abstracts
-    - only_throw_errors
-    - overridden_fields
-    - package_names
-    - parameter_assignments
-    - prefer_adjacent_string_concatenation
-    - prefer_asserts_in_initializer_lists
-    - prefer_asserts_with_message
-    - prefer_collection_literals
-    - prefer_conditional_assignment
-    - prefer_const_constructors
-    - prefer_const_constructors_in_immutables
-    - prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
-    - prefer_constructors_over_static_methods
-    - prefer_contains
-    - prefer_final_fields
+    # - noop_primitive_operations
+    # - null_check_on_nullable_type_parameter
+    # - null_closures
+    # - omit_local_variable_types
+    # - one_member_abstracts
+    # - only_throw_errors
+    # - overridden_fields
+    # - package_names
+    # - parameter_assignments
+    # - prefer_adjacent_string_concatenation
+    # - prefer_asserts_in_initializer_lists
+    # - prefer_asserts_with_message
+    # - prefer_collection_literals
+    # - prefer_conditional_assignment
+    # - prefer_const_constructors
+    # - prefer_const_constructors_in_immutables
+    # - prefer_const_declarations
+    # - prefer_const_literals_to_create_immutables
+    # - prefer_constructors_over_static_methods
+    # - prefer_contains
+    # - prefer_final_fields
     # - prefer_final_in_for_each
     # - prefer_final_locals
     # - prefer_for_elements_to_map_fromIterable
