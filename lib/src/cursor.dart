@@ -128,7 +128,8 @@ class _UpDirectionArrowPainter extends CustomPainter {
       ..moveTo(0, y)
       ..lineTo(x / 2, 0)
       ..lineTo(x, y)
-      ..lineTo(0, y);
+      ..lineTo(0, y)
+      ..close();
   }
 
   @override
