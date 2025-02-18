@@ -9,6 +9,8 @@ typedef CursorBuilder = Widget? Function(AutoScrollDirection direction);
 
 /// Used to display a custom cursor while auto scrolling.
 ///
+/// Must be a child of a [Stack] widget.
+///
 class AutoScrollCustomCursor extends StatelessWidget {
   /// Creates an [AutoScrollCustomCursor].
   ///

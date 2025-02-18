@@ -13,7 +13,7 @@ issue_tracker: https://github.com/KeepAscent/auto_scrolling/issues
 version: 0.3.2
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.4.0
   flutter: ">=1.20.0"
 
 dependencies:
