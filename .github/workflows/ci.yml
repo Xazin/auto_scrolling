@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: flutter pub get --no-example
+        run: flutter pub get
 
       - name: Flutter Doctor
         run: flutter doctor --verbose
