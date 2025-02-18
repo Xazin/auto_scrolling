@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  flutter_version: "3.27.1"
+  flutter_version: "3.29.0"
   flutter_channel: "stable"
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --no-example
 
       - name: Flutter Doctor
         run: flutter doctor --verbose
