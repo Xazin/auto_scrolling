@@ -13,7 +13,7 @@ env:
 
 jobs:
   analyze:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Fetch code from repository
         uses: actions/checkout@v4
@@ -24,22 +24,14 @@ jobs:
           channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
 
-      - name: Remove example/ directory
-        run: rm -rf example/
-
       - name: Get Flutter dependencies
         run: flutter pub get
-
-      - name: Enable Flutter Desktop
-        run: flutter config --enable-linux-desktop
-        shell: bash
 
       - name: Check formatting
         run: dart format --set-exit-if-changed .
 
       - name: Run analyze
         run: flutter analyze .
-        shell: bash
 
   test:
     runs-on: ubuntu-latest
@@ -52,9 +44,6 @@ jobs:
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: ${{ env.flutter_channel }}
-
-      - name: Remove example/ directory
-        run: rm -rf example/
 
       - name: Install dependencies
         run: flutter pub get
