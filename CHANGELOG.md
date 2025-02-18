@@ -1,6 +1,12 @@
+## 0.3.2
+
+- fix: missing close of path by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/17
+- fix: contrast issues with cursor and anchor by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/16
+- test: add coverage by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/14
+
 ## 0.3.1
 
-- docus: update documentation by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/11
+- docs: update documentation by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/11
 
 ## 0.3.0
 
