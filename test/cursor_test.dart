@@ -13,7 +13,7 @@ void main() {
                 parentKey: GlobalKey(),
                 cursorOffset: Offset.zero,
                 direction: AutoScrollDirection.up,
-                cursorBuilder: (_, __) => Container(
+                cursorBuilder: (_) => Container(
                   width: 10,
                   height: 10,
                   color: Colors.red,
@@ -27,17 +27,24 @@ void main() {
 
       expect(find.byType(AutoScrollCustomCursor), findsOneWidget);
     });
-    testWidgets('can render UpDirectionArrow', (tester) async {
+    testWidgets('can render DirectionArrow (all types)', (tester) async {
+      final children = <Widget>[];
+
+      for (final value in AutoScrollDirection.values) {
+        children.add(DirectionArrow(direction: value));
+      }
+
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: Center(child: UpDirectionArrow()),
-          ),
+        MaterialApp(
+          home: Scaffold(body: Column(children: children)),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(UpDirectionArrow), findsOneWidget);
+      expect(
+        find.byType(DirectionArrow),
+        findsNWidgets(AutoScrollDirection.values.length),
+      );
     });
   });
 }
