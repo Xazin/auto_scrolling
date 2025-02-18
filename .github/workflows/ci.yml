@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Flutter Doctor
+        run: flutter doctor --verbose
+
       - name: Analyze
         run: flutter analyze
 
