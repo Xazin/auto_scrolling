@@ -47,13 +47,12 @@ class _SingleDirectionScrollSampleState
                 true,
               _ => false,
             },
-            cursorBuilder: (isMoving, direction) => switch (direction) {
-              AutoScrollDirection.down => const Icon(Icons.keyboard_arrow_down),
-              AutoScrollDirection.up => const Icon(Icons.keyboard_arrow_up),
-              AutoScrollDirection.left => const Icon(Icons.keyboard_arrow_left),
-              AutoScrollDirection.right =>
-                const Icon(Icons.keyboard_arrow_right),
-              _ => null,
+            cursorBuilder: (direction) {
+              if (direction == AutoScrollDirection.none) {
+                return null;
+              }
+
+              return DirectionArrow(direction: direction);
             },
             anchorBuilder: (_) => SingleDirectionAnchor(
               direction: isVertical ? Axis.vertical : Axis.horizontal,

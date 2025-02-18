@@ -9,13 +9,21 @@ import 'package:flutter/material.dart';
 class SingleDirectionAnchor extends StatelessWidget {
   /// Creates a [SingleDirectionAnchor].
   ///
-  const SingleDirectionAnchor({super.key, this.direction = Axis.vertical});
+  const SingleDirectionAnchor({
+    super.key,
+    this.direction = Axis.vertical,
+    this.fillColor = Colors.white,
+  });
 
   /// The direction of the anchor.
   ///
   /// Defaults to [Axis.vertical].
   ///
   final Axis direction;
+
+  /// The fill color of the anchor, defaults to [Colors.white].
+  ///
+  final Color fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +37,7 @@ class SingleDirectionAnchor extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(width: .8),
+          color: fillColor,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,6 +90,7 @@ class MultiDirectionAnchor extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(width: .8),
+          color: Colors.white,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,12 +157,12 @@ class _TrianglePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    final fillPaint = Paint()
       ..color = Colors.black
       ..strokeWidth = 1
       ..style = PaintingStyle.fill;
 
-    canvas.drawPath(getTrianglePath(size.width, size.height), paint);
+    canvas.drawPath(getTrianglePath(size.width, size.height), fillPaint);
   }
 
   Path getTrianglePath(double x, double y) {
@@ -160,7 +170,8 @@ class _TrianglePainter extends CustomPainter {
       ..moveTo(0, y)
       ..lineTo(x / 2, 0)
       ..lineTo(x, y)
-      ..lineTo(0, y);
+      ..lineTo(0, y)
+      ..close();
   }
 
   @override
