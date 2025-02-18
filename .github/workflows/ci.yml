@@ -15,26 +15,23 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Flutter
+      - name: Fetch code from repository
+        uses: actions/checkout@v4
+
+      - name: Setup the Flutter environment
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.flutter_version }}
           channel: ${{ env.flutter_channel }}
+          flutter-version: ${{ env.flutter_version }}
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Get Flutter dependencies
+        run: flutter pub get .
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Check for any formatting issues
+        run: dart format --set-exit-if-changed .
 
-      - name: Flutter Doctor
-        run: flutter doctor --verbose
-
-      - name: Analyze
-        run: flutter analyze
-
-      - name: Check code formatting
-        run: flutter format --set-exit-if-changed --dry-run .
+      - name: Statically analyze the Dart code
+        run: flutter analyze .
 
   test:
     runs-on: ubuntu-latest
