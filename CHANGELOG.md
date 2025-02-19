@@ -1,3 +1,10 @@
+## 0.3.3
+
+- refactor: auto scroll engage behavior by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/23
+- fix: ci and test by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/22
+- cicd: add ci using github workflows by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/21
+- test: test coverage for custom cursor by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/20
+
 ## 0.3.2
 
 - fix: missing close of path by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/17

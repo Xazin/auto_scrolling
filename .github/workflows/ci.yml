@@ -56,4 +56,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-          file: coverage/lcov.info
+          directory: coverage
+          files: coverage/lcov.info
