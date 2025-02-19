@@ -133,14 +133,19 @@ void main() {
 
     testWidgets('Scroll vertically without releasing middle mouse button',
         (tester) async {
+      var isScrolling = false;
       final controller = ScrollController();
-      await tester.pumpWidget(_buildAutoScroll(controller));
+      await tester.pumpWidget(
+        _buildAutoScroll(
+          controller,
+          onScrolling: (isS) => isScrolling = isS,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(controller.offset, 0.0);
 
       final center = tester.getCenter(find.byType(AutoScroll));
-
       final pointer = TestPointer(
         1,
         PointerDeviceKind.mouse,
@@ -155,10 +160,20 @@ void main() {
         pointer.move(center + const Offset(0, 100)),
       );
 
+      expect(isScrolling, true);
+
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // We expect to be at the end, so the offset should be the maximum.
       expect(controller.offset, controller.position.maxScrollExtent);
+
+      expect(isScrolling, true);
+
+      // Release auto scrolling
+      await tester.sendEventToBinding(pointer.up());
+      await tester.pump();
+
+      expect(isScrolling, false);
     });
 
     testWidgets('Click to enable auto scrolling', (tester) async {

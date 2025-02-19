@@ -152,6 +152,7 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
         children: [
           Positioned.fill(
             child: AutoScrollMouseListener(
+              deadZoneRadius: widget.deadZoneRadius,
               hideCursor: useCustomCursor,
               onStartScrolling: (startOffset) {
                 setState(() {
