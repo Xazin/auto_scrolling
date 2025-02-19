@@ -152,6 +152,7 @@ class _AutoScrollState extends State<AutoScroll> {
         children: [
           Positioned.fill(
             child: AutoScrollMouseListener(
+              deadZoneRadius: widget.deadZoneRadius,
               hideCursor: useCustomCursor,
               onStartScrolling: (startOffset) {
                 setState(() {

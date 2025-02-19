@@ -192,8 +192,11 @@ void main() {
     // We expect to not be at the start
     expect(verticalController.offset, isNot(0.0));
 
-    // Now we scroll up to test the other version of the cursor
+    // Move cursor to anchor, and stop scrolling
+    await gesture.moveTo(center);
+    await tester.pump(const Duration(milliseconds: 500));
 
+    // Now we scroll up to test the other version of the cursor
     await gesture.moveTo(center + const Offset(0, -15));
     await tester.pump(const Duration(milliseconds: 500));
 
