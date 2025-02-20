@@ -135,9 +135,18 @@ class _AutoScrollState extends State<AutoScroll> {
       widget.cursorBuilder != null &&
       (widget.willUseCustomCursor?.call(direction) ?? false);
 
-  bool get canScroll =>
-      widget.controller.hasClients &&
-      widget.controller.position.maxScrollExtent > 0;
+  bool canScroll = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        canScroll = widget.controller.hasClients &&
+            widget.controller.position.maxScrollExtent > 0;
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {

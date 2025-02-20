@@ -135,11 +135,20 @@ class _MultiAxisAutoScrollState extends State<MultiAxisAutoScroll> {
       widget.cursorBuilder != null &&
       (widget.willUseCustomCursor?.call(direction) ?? false);
 
-  bool get canScroll =>
-      (widget.verticalController.hasClients &&
-          widget.verticalController.position.maxScrollExtent > 0) ||
-      (widget.horizontalController.hasClients &&
-          widget.horizontalController.position.maxScrollExtent > 0);
+  bool canScroll = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        canScroll = (widget.verticalController.hasClients &&
+                widget.verticalController.position.maxScrollExtent > 0) ||
+            (widget.horizontalController.hasClients &&
+                widget.horizontalController.position.maxScrollExtent > 0);
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {

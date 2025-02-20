@@ -5,6 +5,48 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AutoScroll widget', () {
+    testWidgets('Auto scroll disabled without enough space to scroll',
+        (tester) async {
+      var isScrolling = false;
+      final verticalController = ScrollController();
+      final horizontalController = ScrollController();
+      await tester.pumpWidget(
+        _buildAutoScroll(
+          verticalController,
+          horizontalController,
+          addVerticalScrollSpace: false,
+          addHorizontalScrollSpace: false,
+          onScrolling: (isS) => isScrolling = isS,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(isScrolling, false);
+      expect(verticalController.position.maxScrollExtent, 0.0);
+      expect(horizontalController.position.maxScrollExtent, 0.0);
+
+      final center = tester.getCenter(find.byType(MultiAxisAutoScroll));
+
+      await tester.tapAt(center, buttons: kMiddleMouseButton);
+      await tester.pump();
+
+      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      await gesture.addPointer(location: center);
+      await tester.pump();
+
+      expect(isScrolling, false);
+
+      await gesture.moveBy(const Offset(200, 200));
+      await tester.pumpAndSettle();
+
+      expect(isScrolling, false);
+
+      // Move up and left (reverse direction)
+      await gesture.moveBy(const Offset(-400, -400));
+      await tester.pumpAndSettle();
+
+      expect(isScrolling, false);
+    });
     testWidgets('Scroll vertically and horizontally', (tester) async {
       final verticalController = ScrollController();
       final horizontalController = ScrollController();
@@ -213,6 +255,8 @@ void main() {
 Widget _buildAutoScroll(
   ScrollController verticalController,
   ScrollController horizontalController, {
+  bool addVerticalScrollSpace = true,
+  bool addHorizontalScrollSpace = true,
   void Function(bool isScrolling)? onScrolling,
   Widget Function(BuildContext)? anchorBuilder,
   Widget? Function(AutoScrollDirection)? cursorBuilder,
@@ -232,9 +276,9 @@ Widget _buildAutoScroll(
           child: SingleChildScrollView(
             controller: horizontalController,
             scrollDirection: Axis.horizontal,
-            child: const SizedBox(
-              width: 10000,
-              height: 10000,
+            child: SizedBox(
+              width: addHorizontalScrollSpace ? 10000 : 100,
+              height: addVerticalScrollSpace ? 10000 : 100,
             ),
           ),
         ),

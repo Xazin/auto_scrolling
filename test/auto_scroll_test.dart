@@ -6,6 +6,36 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AutoScroll widget', () {
+    testWidgets('Scroll disabled when not scrollable', (tester) async {
+      var isScrolling = false;
+      final controller = ScrollController();
+      await tester.pumpWidget(
+        _buildAutoScroll(
+          controller,
+          addEnoughScrollSpace: false,
+          onScrolling: (isS) => isScrolling = isS,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(controller.position.maxScrollExtent, 0.0);
+      expect(isScrolling, false);
+
+      final center = tester.getCenter(find.byType(AutoScroll));
+
+      await tester.tapAt(center, buttons: kMiddleMouseButton);
+      await tester.pump();
+
+      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      await gesture.addPointer(location: center);
+      await tester.pump();
+
+      await gesture.moveBy(const Offset(0, 100));
+      await tester.pumpAndSettle();
+
+      expect(isScrolling, false);
+    });
+
     testWidgets('Scroll vertically', (tester) async {
       final controller = ScrollController();
       await tester.pumpWidget(_buildAutoScroll(controller));
@@ -365,13 +395,16 @@ void main() {
   });
 }
 
-Widget _buildAutoScroll(ScrollController controller,
-    {Axis scrollDirection = Axis.vertical,
-    void Function(bool isScrolling)? onScrolling,
-    Widget Function(BuildContext)? anchorBuilder,
-    int deadZoneRadius = 10,
-    Widget? Function(AutoScrollDirection)? cursorBuilder,
-    bool Function(AutoScrollDirection)? willUseCustomCursor}) {
+Widget _buildAutoScroll(
+  ScrollController controller, {
+  bool addEnoughScrollSpace = true,
+  Axis scrollDirection = Axis.vertical,
+  void Function(bool isScrolling)? onScrolling,
+  Widget Function(BuildContext)? anchorBuilder,
+  int deadZoneRadius = 10,
+  Widget? Function(AutoScrollDirection)? cursorBuilder,
+  bool Function(AutoScrollDirection)? willUseCustomCursor,
+}) {
   return MaterialApp(
     home: Scaffold(
       body: AutoScroll(
@@ -385,8 +418,11 @@ Widget _buildAutoScroll(ScrollController controller,
         child: ListView.builder(
           controller: controller,
           scrollDirection: scrollDirection,
-          itemCount: 100,
-          itemBuilder: (_, __) => const SizedBox(height: 500, width: 500),
+          itemCount: addEnoughScrollSpace ? 100 : 1,
+          itemBuilder: (_, __) => SizedBox(
+            height: addEnoughScrollSpace ? 500 : 30,
+            width: addEnoughScrollSpace ? 500 : 30,
+          ),
         ),
       ),
     ),
