@@ -2,9 +2,15 @@
 
 [![Pub](https://img.shields.io/pub/v/auto_scrolling.svg)](https://pub.dev/packages/auto_scrolling)
 
-This package provides a widget that enhances scrollable widgets by enabling auto-scrolling, a common feature in desktop and web applications.
+This package provides widgets that enhances scrollable widgets by enabling auto-scrolling, a common feature in desktop and web applications.
 
 ## Features
+
+- Two ways to engage auto scroll
+- Supports custom anchor (similar to FireFox)
+- Supports custom cursor for directional cursor
+- Pre-built anchors and cursors to get you up and auto scrolling quickly
+- Support for both single and multi directional scrolling
 
 This package supports two built-in methods to activate auto-scrolling:
 
@@ -32,7 +38,7 @@ This is supported for all relevant platforms. However, auto scroll shouldn't be 
 
 ### Install
 
-Add the package to your dependencies, see [how under `Installing`](https://pub.dev/packages/auto_scrolling/install).
+Add the package to your dependencies, see how under [`Installing`](https://pub.dev/packages/auto_scrolling/install).
 
 ### Usage
 
@@ -120,11 +126,10 @@ AutoScroll(
     }
 
     // If we are moving up or down, turn the cursor into an arrow
-    // turned in the corresponding scroll direction
+    // turned in the corresponding scroll direction.
     return switch (direction) {
       AutoScrollDirection.none => const SingleDirectionAnchor(),
-      AutoScrollDirection.up => const UpDirectionArrow(),
-      AutoScrollDirection.down => const RotatedBox(quarterTurns: 2, child: UpDirectionArrow()), 
+      AutoScrollDirection.up || AutoScrollDirection.down => DirectionArrow(direction: direction), 
       _ => null,
     };
   },
