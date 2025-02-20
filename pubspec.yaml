@@ -13,7 +13,7 @@ issue_tracker: https://github.com/KeepAscent/auto_scrolling/issues
 version: 0.3.3
 
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.0.0
   flutter: ">=1.20.0"
 
 dependencies:
@@ -23,7 +23,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
