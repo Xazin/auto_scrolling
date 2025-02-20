@@ -135,6 +135,10 @@ class _AutoScrollState extends State<AutoScroll> {
       widget.cursorBuilder != null &&
       (widget.willUseCustomCursor?.call(direction) ?? false);
 
+  bool get canScroll =>
+      widget.controller.hasClients &&
+      widget.controller.position.maxScrollExtent > 0;
+
   @override
   void dispose() {
     scrollTimer?.cancel();
@@ -152,6 +156,7 @@ class _AutoScrollState extends State<AutoScroll> {
         children: [
           Positioned.fill(
             child: AutoScrollMouseListener(
+              isEnabled: canScroll,
               deadZoneRadius: widget.deadZoneRadius,
               hideCursor: useCustomCursor,
               onStartScrolling: (startOffset) {

@@ -55,10 +55,10 @@ class _MultiDirectionalScrollSampleState
               scrollDirection: Axis.horizontal,
               child: Column(
                 children: [
-                  for (var index = 0; index < 100; index++)
+                  for (var index = 0; index < 1; index++)
                     Container(
                       height: 500,
-                      width: 50000,
+                      width: 100,
                       color: colorForIndex(index),
                     ),
                 ],
