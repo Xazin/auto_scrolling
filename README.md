@@ -1,6 +1,6 @@
 # Auto Scrolling
 
-[![Pub](https://img.shields.io/pub/v/auto_scrolling.svg)](https://pub.dev/packages/auto_scrolling)
+[![Pub](https://img.shields.io/pub/v/auto_scrolling.svg)](https://pub.dev/packages/auto_scrolling) [![codecov](https://codecov.io/gh/KeepAscent/auto_scrolling/graph/badge.svg?token=TZZMYDU9Y7)](https://codecov.io/gh/KeepAscent/auto_scrolling) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/license/mit) ![Continuous integration](https://github.com/KeepAscent/auto_scrolling/actions/workflows/ci.yml/badge.svg)
 
 This package provides widgets that enhances scrollable widgets by enabling auto-scrolling, a common feature in desktop and web applications.
 
