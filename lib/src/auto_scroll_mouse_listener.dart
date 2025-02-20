@@ -9,6 +9,7 @@ class AutoScrollMouseListener extends StatefulWidget {
   ///
   const AutoScrollMouseListener({
     super.key,
+    this.isEnabled = true,
     this.onStartScrolling,
     this.onEndScrolling,
     this.onMouseMoved,
@@ -16,6 +17,13 @@ class AutoScrollMouseListener extends StatefulWidget {
     this.deadZoneRadius = 10,
     required this.child,
   });
+
+  /// Determines whether the auto scrolling is enabled.
+  ///
+  /// If set to 'false', the widget will not feed any mouse events through
+  /// the callbacks.
+  ///
+  final bool isEnabled;
 
   /// A callback that is called when the scrolling is engaged.
   ///
@@ -67,17 +75,19 @@ class _AutoScrollMouseListenerState extends State<AutoScrollMouseListener> {
     // auto scrolling is engaged by middle mouse click rather than
     // middle mouse click+drag.
     return MouseRegion(
-      cursor: widget.hideCursor && isScrolling
+      cursor: widget.isEnabled && widget.hideCursor && isScrolling
           ? SystemMouseCursors.none
-          : SystemMouseCursors.basic,
+          : MouseCursor.defer,
       onHover: (event) {
+        if (!widget.isEnabled) return stopScrolling();
+
         if (isScrolling && startOffset != null) {
           widget.onMouseMoved?.call(startOffset!, event.position);
         }
       },
       child: Listener(
         onPointerDown: (event) {
-          if (isScrolling) {
+          if (isScrolling || !widget.isEnabled) {
             return stopScrolling();
           }
 
@@ -90,9 +100,7 @@ class _AutoScrollMouseListenerState extends State<AutoScrollMouseListener> {
           widget.onStartScrolling?.call(event.position);
         },
         onPointerUp: (event) {
-          checkLeftDeadZone(event);
-
-          if (leftDeadZone) {
+          if (!widget.isEnabled || checkLeftDeadZone(event)) {
             stopScrolling();
           }
         },
@@ -107,11 +115,12 @@ class _AutoScrollMouseListenerState extends State<AutoScrollMouseListener> {
     );
   }
 
-  void checkLeftDeadZone(PointerEvent event) {
-    if (startOffset != null &&
-        (event.position - startOffset!).distance > widget.deadZoneRadius) {
-      setState(() => leftDeadZone = true);
-    }
+  bool checkLeftDeadZone(PointerEvent event) {
+    final leftDeadZone = startOffset != null &&
+        (event.position - startOffset!).distance > widget.deadZoneRadius;
+
+    setState(() => this.leftDeadZone = leftDeadZone);
+    return leftDeadZone;
   }
 
   void stopScrolling() {
