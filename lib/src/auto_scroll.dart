@@ -132,6 +132,7 @@ class _AutoScrollState extends State<AutoScroll> {
   AutoScrollDirection direction = AutoScrollDirection.none;
 
   bool get useCustomCursor =>
+      startOffset != null &&
       widget.cursorBuilder != null &&
       (widget.willUseCustomCursor?.call(direction) ?? false);
 
@@ -157,9 +158,7 @@ class _AutoScrollState extends State<AutoScroll> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: startOffset != null && useCustomCursor
-          ? SystemMouseCursors.none
-          : MouseCursor.defer,
+      cursor: useCustomCursor ? SystemMouseCursors.none : MouseCursor.defer,
       child: Stack(
         key: _key,
         children: [
