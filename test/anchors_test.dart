@@ -1,4 +1,4 @@
-import 'package:auto_scrolling/src/anchors.dart';
+import 'package:auto_scrolling/auto_scrolling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,7 +13,7 @@ void main() {
             onPressed: () => wasTapped = true,
             child: const Text('Button'),
           ),
-          const SingleDirectionAnchor(),
+          const SingleDirectionAnchor(direction: Axis.horizontal),
         ),
       );
 
