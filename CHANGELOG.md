@@ -1,3 +1,12 @@
+## 0.4.0
+
+- feat: add reactive direction anchor by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/34
+- chore: backwards compatibility with dart 3.0.0 and up by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/31
+- ci: add paths for changes by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/30
+- docs: add badge to readme by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/29
+- docs: update readme documentation by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/28
+- fix: disable autoscroll when widget is unscrollable by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/27
+
 ## 0.3.3
 
 - refactor: auto scroll engage behavior by @Xazin in https://github.com/KeepAscent/auto_scrolling/pull/23
