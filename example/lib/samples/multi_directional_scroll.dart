@@ -29,7 +29,12 @@ class _MultiDirectionalScrollSampleState
         _ => true,
       },
       cursorBuilder: cursorBuilder,
-      anchorBuilder: (context) => MultiDirectionAnchor(),
+      // For an anchor that doesn't grey out arrows depending on the scrollables,
+      // use MultiDirectionAnchor instead of ReactiveAnchor.
+      anchorBuilder: (_) => ReactiveDirectionAnchor(
+        verticalController: verticalController,
+        horizontalController: horizontalController,
+      ),
       verticalController: verticalController,
       horizontalController: horizontalController,
       child: Scrollbar(

@@ -54,6 +54,10 @@ void main() {
         _buildAutoScroll(
           verticalController,
           horizontalController,
+          anchorBuilder: (_) => ReactiveDirectionAnchor(
+            verticalController: verticalController,
+            horizontalController: horizontalController,
+          ),
         ),
       );
       await tester.pumpAndSettle();
