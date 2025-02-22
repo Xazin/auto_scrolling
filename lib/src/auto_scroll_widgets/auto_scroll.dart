@@ -1,8 +1,7 @@
 import 'dart:async';
 
+import 'package:auto_scrolling/auto_scrolling.dart';
 import 'package:auto_scrolling/src/auto_scroll_mouse_listener.dart';
-import 'package:auto_scrolling/src/cursor.dart';
-import 'package:auto_scrolling/src/utils.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that wraps a [Scrollable] widget and enables auto-scrolling in

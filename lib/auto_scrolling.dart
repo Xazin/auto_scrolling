@@ -5,7 +5,6 @@
 library;
 
 export 'src/anchors/anchors.dart';
-export 'src/auto_scroll.dart';
-export 'src/cursor.dart';
-export 'src/multi_axis_auto_scroll.dart';
+export 'src/auto_scroll_widgets/auto_scroll_widgets.dart';
+export 'src/cursors/cursors.dart';
 export 'src/utils.dart';
